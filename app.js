@@ -55,6 +55,15 @@ const movieId = (Number(req.params.id));
 //use the deleteMoviesById(movieId) function
 const deletedMovie = await deleteMovieByID(movieId);
 //use success/payload to return the astronaut chosen to be deleted
+
+//if the deletedMovie does not match an id return false and movie not found
+if (!deletedMovie) {
+    res.status(404).json ({
+      success: false,
+      message: "Movie not found"
+  })
+  return }
+
 const deletedData = {
     "success": true,
     "payload": deletedMovie,
