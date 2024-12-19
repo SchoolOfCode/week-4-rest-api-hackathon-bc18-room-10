@@ -17,9 +17,11 @@ app.listen(PORT, function () {
 });
 
 import {
-    getMovies
+    getMovies,
+    getMovieById
 } from "./helpers.js"
 
+//get request for all movies
 app.get("/movies", async function (req, res) {
     const returnedData = await getMovies();
     const allMovies = {
@@ -27,4 +29,19 @@ app.get("/movies", async function (req, res) {
         "payload": returnedData,
     }
     res.json(allMovies);
+})
+
+//get request for a particular movie
+//get request with path as /movies:id
+app.get("/movies/:id", async function (req,res){
+    //delcare the id and make sure we change the id to a number
+    //use the getMoviebyId function with one parameter
+    const returnedData = await getMovieById(Number(req.params.id))
+    //create a success/payload object to store the function
+    const movieByID = {
+        "success": true,
+        "payload": returnedData,
+    }
+    //respond to the client with the specific movie
+    res.json(movieByID);
 })
