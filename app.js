@@ -15,3 +15,16 @@ const PORT = 3000;
 app.listen(PORT, function () {
   console.log(`Server is now listening on http://localhost:${PORT}`);
 });
+
+import {
+    getMovies
+} from "./helpers.js"
+
+app.get("/movies", async function (req, res) {
+    const returnedData = await getMovies();
+    const allMovies = {
+        "success": true,
+        "payload": returnedData,
+    }
+    res.json(allMovies);
+})
