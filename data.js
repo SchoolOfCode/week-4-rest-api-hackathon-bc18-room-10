@@ -1,4 +1,4 @@
- [
+ export const data = [
   {
     title: "The Gold Rush",
     rating: "Passed",

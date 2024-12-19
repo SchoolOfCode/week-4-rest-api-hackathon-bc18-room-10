@@ -1,2 +1,3 @@
-import data from "./data.json" assert { type: "json" };
+import { data } from "./data.js";
+
 console.log(data[0]);
