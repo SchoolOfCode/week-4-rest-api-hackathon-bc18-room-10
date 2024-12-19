@@ -17,3 +17,13 @@ export async function getMovieById(movieId) {
   return movie.id === movieId;
   });
 }
+
+
+//create a function to get all movies containing an actors name
+//the parameter is a "search"
+export async function getMoviesByActor(search) {
+    //use toLowerCase function on search parameter and return so it is not case sensitive.
+    const actor = search.toLowerCase();
+    // use filter, split and includes to return movies containing search string.
+    return movies.filter(movie => movie.stars.toLowerCase().split(", ").includes(actor))
+}

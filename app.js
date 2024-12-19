@@ -18,18 +18,19 @@ app.listen(PORT, function () {
 
 import {
     getMovies,
-    getMovieById
+    getMovieById,
+    getMoviesByActor
 } from "./helpers.js"
 
 //get request for all movies
-app.get("/movies", async function (req, res) {
+/* app.get("/movies", async function (req, res) {
     const returnedData = await getMovies();
     const allMovies = {
         "success": true,
         "payload": returnedData,
     }
     res.json(allMovies);
-})
+}) */
 
 //get request for a particular movie
 //get request with path as /movies:id
@@ -45,3 +46,23 @@ app.get("/movies/:id", async function (req,res){
     //respond to the client with the specific movie
     res.json(movieByID);
 })
+
+
+
+//get request
+//path is "/movies"
+app.get("/movies", async function (req, res) {
+  //specify { name } as query parameter
+  const { name } = req.query;
+
+  //use get by name function, with name as parameter, to return movies with that actor
+  //store in variable
+  const moviesByActor = await getMoviesByActor(name);
+  //return in desired format
+  res.json({
+    success: true,
+    payload: moviesByActor
+  })
+})
+//need to comment out the first get request.
+//needs to be name as the key in the query
