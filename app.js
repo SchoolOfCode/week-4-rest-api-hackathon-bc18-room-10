@@ -18,7 +18,8 @@ app.listen(PORT, function () {
 
 import {
     getMovies,
-    getMovieById
+    getMovieById,
+    replaceMovieById
 } from "./helpers.js"
 
 //get request for all movies
@@ -45,3 +46,36 @@ app.get("/movies/:id", async function (req,res){
     //respond to the client with the specific movie
     res.json(movieByID);
 })
+
+//put request for replacing a movie
+//put request with path /movies/:id 
+app.put("/movies/:id", async function (req, res) {
+  //specify an id and store in variable. req.params
+  const movieId = Number(req.params.id);
+  //store movie replacement in a variable, from the body of the request.
+  const movieReplacement = req.body;
+  // use replace function with id and replacement parameters
+  // create variable to store new data
+  const replacementData = await replaceMovieById(movieId, movieReplacement);
+  //repsond in desired format.
+  const replacedMovie = {
+    "success": true,
+    "payload": replacementData,
+  }
+  res.json(replacedMovie);
+})
+
+//for testing put
+/* {
+  "title": "Star Wars",
+  "rating": "-",
+  "runtime": 100,
+  "imdb_rating": 10,
+  "votes": 999,
+  "genre": "Sci-fi, Adventure",
+  "release_year": 1977,
+  "description": "it's star wars",
+  "director": "George Lucas",
+  "stars": "Mark Hamill, Carrie Fisher, Harrison Ford",
+  "gross": ""
+} */
