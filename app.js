@@ -18,7 +18,8 @@ app.listen(PORT, function () {
 
 import {
     getMovies,
-    getMovieById
+    getMovieById,
+    deleteMovieByID
 } from "./helpers.js"
 
 //get request for all movies
@@ -32,7 +33,7 @@ app.get("/movies", async function (req, res) {
 })
 
 //get request for a particular movie
-//get request with path as /movies:id
+//get request with path as /movies/:id
 app.get("/movies/:id", async function (req,res){
     //delcare the id and make sure we change the id to a number
     //use the getMoviebyId function with one parameter
@@ -44,4 +45,20 @@ app.get("/movies/:id", async function (req,res){
     }
     //respond to the client with the specific movie
     res.json(movieByID);
+})
+
+//delete request
+//use delete request with path "/movies/:id"
+app.delete("/movies/:id", async function (req,res){
+//specify the id of the movie to delete
+const movieId = (Number(req.params.id));
+//use the deleteMoviesById(movieId) function
+const deletedMovie = await deleteMovieByID(movieId);
+//use success/payload to return the astronaut chosen to be deleted
+const deletedData = {
+    "success": true,
+    "payload": deletedMovie,
+  }
+//respond to the client
+res.json(deletedData);
 })
