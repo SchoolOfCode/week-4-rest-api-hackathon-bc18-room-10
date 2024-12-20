@@ -133,9 +133,10 @@ app.put("/movies/:id", async function (req, res) {
 
 
 //Patch request to update a movie with a specific id
-app.patch("movies/:id", async function (req, res) {
+app.patch("/movies/:id", async function (req, res) {
   //Store the updated data in a variable
   const movieId = Number(req.params.id);
+  console.log(movieId)
   const movieUpdate = req.body;
   const updatedData = await updateMovieById(movieId, movieUpdate);
   //Store the updated movie with JSend specification
@@ -143,7 +144,6 @@ app.patch("movies/:id", async function (req, res) {
     "success": true,
     "payload": updatedData,
   };
-  console.log(updatedMovie);
   res.status(200).json(updatedMovie);
 });
 
