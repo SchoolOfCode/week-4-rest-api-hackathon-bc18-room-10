@@ -16,11 +16,16 @@ app.listen(PORT, function () {
   console.log(`Server is now listening on http://localhost:${PORT}`);
 });
 
+
 import {
     getMovies,
     getMovieById,
-    getMoviesByActor
+    getMoviesByActor,
+    replaceMovieById,
+    addMovie,
+    deleteMovieByID
 } from "./helpers.js"
+
 
 //get request for all movies
 /* app.get("/movies", async function (req, res) {
@@ -33,7 +38,8 @@ import {
 }) */
 
 //get request for a particular movie
-//get request with path as /movies:id
+
+//get request with path as /movies/:id
 app.get("/movies/:id", async function (req,res){
     //delcare the id and make sure we change the id to a number
     //use the getMoviebyId function with one parameter
@@ -66,3 +72,77 @@ app.get("/movies", async function (req, res) {
 })
 //need to comment out the first get request.
 //needs to be name as the key in the query
+
+
+//delete request
+//use delete request with path "/movies/:id"
+app.delete("/movies/:id", async function (req,res){
+//specify the id of the movie to delete
+const movieId = (Number(req.params.id));
+//use the deleteMoviesById(movieId) function
+const deletedMovie = await deleteMovieByID(movieId);
+//use success/payload to return the astronaut chosen to be deleted
+
+//if the deletedMovie does not match an id return false and movie not found
+if (!deletedMovie) {
+    res.status(404).json ({
+      success: false,
+      message: "Movie not found"
+  })
+  return }
+
+const deletedData = {
+    "success": true,
+    "payload": deletedMovie,
+  }
+//respond to the client
+res.json(deletedData);
+})
+
+
+//post request for a new movie
+app.post("/movies", async function (req, res) {
+  //store in a variable the data from the new movie object that will be returned by the addMovie function
+  const newMovieData = await addMovie(req.body);
+  //JSON response with JSend specification
+  const movieInfo = {
+    success: true,
+    payload: newMovieData,
+  };
+  //send a 201 status code for the newly created resource
+  res.status(201).json(movieInfo);
+});
+
+//put request with path /movies/:id 
+app.put("/movies/:id", async function (req, res) {
+  //specify an id and store in variable. req.params
+  const movieId = Number(req.params.id);
+  //store movie replacement in a variable, from the body of the request.
+  const movieReplacement = req.body;
+  // use replace function with id and replacement parameters
+  // create variable to store new data
+  const replacementData = await replaceMovieById(movieId, movieReplacement);
+  //repsond in desired format.
+  const replacedMovie = {
+    "success": true,
+    "payload": replacementData,
+  }
+  res.json(replacedMovie);
+})
+
+//for testing put
+/* {
+  "title": "Star Wars",
+  "rating": "-",
+  "runtime": 100,
+  "imdb_rating": 10,
+  "votes": 999,
+  "genre": "Sci-fi, Adventure",
+  "release_year": 1977,
+  "description": "it's star wars",
+  "director": "George Lucas",
+  "stars": "Mark Hamill, Carrie Fisher, Harrison Ford",
+  "gross": ""
+} */
+
+
