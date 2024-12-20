@@ -18,6 +18,16 @@ export async function getMovieById(movieId) {
   });
 }
 
+
+//create a function to get all movies containing an actors name
+//the parameter is a "search"
+export async function getMoviesByActor(search) {
+    //use toLowerCase function on search parameter and return so it is not case sensitive.
+    const actor = search.toLowerCase();
+    // use filter, split and includes to return movies containing search string.
+    return movies.filter(movie => movie.stars.toLowerCase().split(", ").includes(actor))
+}
+
 //Create a function to delete a particular movie
 //define a deleteMovieByID function
 //the function needs to take in the movieId of the movie you want to delete
@@ -83,4 +93,5 @@ export async function addMovie(newMovie) {
   //Return the new movie object
   return created;
 }
+
 
