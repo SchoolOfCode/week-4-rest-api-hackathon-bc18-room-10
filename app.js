@@ -16,23 +16,27 @@ app.listen(PORT, function () {
   console.log(`Server is now listening on http://localhost:${PORT}`);
 });
 
+
 import {
     getMovies,
     getMovieById,
+    addMovie,
     deleteMovieByID
 } from "./helpers.js"
 
+
 //get request for all movies
 app.get("/movies", async function (req, res) {
-    const returnedData = await getMovies();
-    const allMovies = {
-        "success": true,
-        "payload": returnedData,
-    }
-    res.json(allMovies);
-})
+  const returnedData = await getMovies();
+  const allMovies = {
+    success: true,
+    payload: returnedData,
+  };
+  res.json(allMovies);
+});
 
 //get request for a particular movie
+
 //get request with path as /movies/:id
 app.get("/movies/:id", async function (req,res){
     //delcare the id and make sure we change the id to a number
@@ -71,3 +75,18 @@ const deletedData = {
 //respond to the client
 res.json(deletedData);
 })
+
+
+//post request for a new movie
+app.post("/movies", async function (req, res) {
+  //store in a variable the data from the new movie object that will be returned by the addMovie function
+  const newMovieData = await addMovie(req.body);
+  //JSON response with JSend specification
+  const movieInfo = {
+    success: true,
+    payload: newMovieData,
+  };
+  //send a 201 status code for the newly created resource
+  res.status(201).json(movieInfo);
+});
+
