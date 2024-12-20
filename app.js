@@ -16,7 +16,14 @@ app.listen(PORT, function () {
   console.log(`Server is now listening on http://localhost:${PORT}`);
 });
 
-import { getMovies, getMovieById, addMovie } from "./helpers.js";
+
+import {
+    getMovies,
+    getMovieById,
+    addMovie,
+    deleteMovieByID
+} from "./helpers.js"
+
 
 //get request for all movies
 app.get("/movies", async function (req, res) {
@@ -29,19 +36,46 @@ app.get("/movies", async function (req, res) {
 });
 
 //get request for a particular movie
-//get request with path as /movies:id
-app.get("/movies/:id", async function (req, res) {
-  //delcare the id and make sure we change the id to a number
-  //use the getMoviebyId function with one parameter
-  const returnedData = await getMovieById(Number(req.params.id));
-  //create a success/payload object to store the function
-  const movieByID = {
-    success: true,
-    payload: returnedData,
-  };
-  //respond to the client with the specific movie
-  res.json(movieByID);
-});
+
+//get request with path as /movies/:id
+app.get("/movies/:id", async function (req,res){
+    //delcare the id and make sure we change the id to a number
+    //use the getMoviebyId function with one parameter
+    const returnedData = await getMovieById(Number(req.params.id))
+    //create a success/payload object to store the function
+    const movieByID = {
+        "success": true,
+        "payload": returnedData,
+    }
+    //respond to the client with the specific movie
+    res.json(movieByID);
+})
+
+//delete request
+//use delete request with path "/movies/:id"
+app.delete("/movies/:id", async function (req,res){
+//specify the id of the movie to delete
+const movieId = (Number(req.params.id));
+//use the deleteMoviesById(movieId) function
+const deletedMovie = await deleteMovieByID(movieId);
+//use success/payload to return the astronaut chosen to be deleted
+
+//if the deletedMovie does not match an id return false and movie not found
+if (!deletedMovie) {
+    res.status(404).json ({
+      success: false,
+      message: "Movie not found"
+  })
+  return }
+
+const deletedData = {
+    "success": true,
+    "payload": deletedMovie,
+  }
+//respond to the client
+res.json(deletedData);
+})
+
 
 //post request for a new movie
 app.post("/movies", async function (req, res) {
@@ -55,3 +89,4 @@ app.post("/movies", async function (req, res) {
   //send a 201 status code for the newly created resource
   res.status(201).json(movieInfo);
 });
+
