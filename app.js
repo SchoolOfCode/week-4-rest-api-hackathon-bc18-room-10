@@ -23,19 +23,20 @@ import {
     getMoviesByActor,
     replaceMovieById,
     addMovie,
-    deleteMovieByID
+    deleteMovieByID,
+    updateMovieById
 } from "./helpers.js"
 
 
 //get request for all movies
-/* app.get("/movies", async function (req, res) {
+app.get("/movies", async function (req, res) {
     const returnedData = await getMovies();
     const allMovies = {
         "success": true,
         "payload": returnedData,
     }
     res.json(allMovies);
-}) */
+})
 
 //get request for a particular movie
 
@@ -57,7 +58,7 @@ app.get("/movies/:id", async function (req,res){
 
 //get request
 //path is "/movies"
-app.get("/movies", async function (req, res) {
+/* app.get("/movies", async function (req, res) {
   //specify { name } as query parameter
   const { name } = req.query;
 
@@ -69,7 +70,7 @@ app.get("/movies", async function (req, res) {
     success: true,
     payload: moviesByActor
   })
-})
+}) */
 //need to comment out the first get request.
 //needs to be name as the key in the query
 
@@ -130,7 +131,24 @@ app.put("/movies/:id", async function (req, res) {
   res.json(replacedMovie);
 })
 
-//for testing put
+
+//Patch request to update a movie with a specific id
+app.patch("movies/:id", async function (req, res) {
+  //Store the updated data in a variable
+  const movieId = Number(req.params.id);
+  const movieUpdate = req.body;
+  const updatedData = await updateMovieById(movieId, movieUpdate);
+  //Store the updated movie with JSend specification
+  const updatedMovie = {
+    "success": true,
+    "payload": updatedData,
+  };
+  console.log(updatedMovie);
+  res.status(200).json(updatedMovie);
+});
+
+
+//for testing put, post and patch
 /* {
   "title": "Star Wars",
   "rating": "-",
@@ -144,5 +162,3 @@ app.put("/movies/:id", async function (req, res) {
   "stars": "Mark Hamill, Carrie Fisher, Harrison Ford",
   "gross": ""
 } */
-
-
