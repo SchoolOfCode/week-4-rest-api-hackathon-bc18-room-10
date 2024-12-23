@@ -29,14 +29,14 @@ import {
 
 
 //get request for all movies
-app.get("/movies", async function (req, res) {
+/* app.get("/movies", async function (req, res) {
     const returnedData = await getMovies();
     const allMovies = {
         "success": true,
         "payload": returnedData,
     }
     res.json(allMovies);
-})
+}) */
 
 //get request for a particular movie
 
@@ -58,19 +58,16 @@ app.get("/movies/:id", async function (req,res){
 
 //get request
 //path is "/movies"
-/* app.get("/movies", async function (req, res) {
-  //specify { name } as query parameter
+app.get("/movies", async function (req, res) {
   const { name } = req.query;
 
-  //use get by name function, with name as parameter, to return movies with that actor
-  //store in variable
+  
   const moviesByActor = await getMoviesByActor(name);
-  //return in desired format
   res.json({
     success: true,
     payload: moviesByActor
   })
-}) */
+})
 //need to comment out the first get request.
 //needs to be name as the key in the query
 
